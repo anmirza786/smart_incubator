@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>History</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:400,600,700"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body onload="getHistory()">
+    <button onclick="getHistory()">History</button>
+    <ul id="data"></ul>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCv_U6wM43mCpeizjd9X-ApFzHzp2HqJ84",
+        authDomain: "smartproject-2b2d5.firebaseapp.com",
+        databaseURL: "https://smartproject-2b2d5.firebaseio.com",
+        projectId: "smartproject-2b2d5",
+        storageBucket: "smartproject-2b2d5.appspot.com",
+        messagingSenderId: "1085537988368",
+        appId: "1:1085537988368:web:4925604e33eb45f0f4bf95",
+        measurementId: "G-205JV6TY22",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+      // function history(){
+      //     history = document.getElementById("history").value;
+      //     firebase.database().ref('History').on("value" , function(snapshot){
+      //         document.getElementById("temp").value = snapshot.val().Temperature;
+      //         document.getElementById("hum").value = snapshot.val().Humidity;
+      //     })
+
+      // }
+
+      //       history();
+
+      // function fetchHistory(){
+      //   firebase.database().ref('History').once('value', function(snapshot){
+      //     snapshot.forEach(
+      //       function(ChildSnapshot){
+      //         let temp = ChildSnapshot.val().Temperature;
+      //         let humi = ChildSnap.val().Humidity;
+      //         history(temp,humi);
+
+      //       }
+      //     )
+
+      //   });
+
+      // window.onload(fetchHistory());
+    </script>
+    <script src="index.js"></script>
+  </body>
+</html>

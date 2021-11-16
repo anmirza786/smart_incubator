@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Registration</title>
+ <link rel="stylesheet" href="style.css" />
+ <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+
+</head>
+<body>
+
+  <div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-85 p-b-20">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-70">
+						Signup
+					</span>
+ <div id="Registration" class="signup">
+  <input type="email" name="email" id="email" placeholder="Enter Your Email"><br><br>
+  <input type="password" name="pass" id="password" placeholder="Enter Your Password"><br><br>
+  <input type="text" name="age" id="age" placeholder="Enter Your Age"><br><br>
+  <input type="text" name="fname" id="fname" placeholder="Enter Your Father Name"><br><br>
+  <input type="text" name="cnic" id="cnic" placeholder="Enter Your CNIC"><br><br>
+  <button onclick="RegisterUser()">Registration New User</button><br>
+  <button onclick="location.href='auth.html';">Login User</button>
+ </div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+
+ <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-database.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
+   <script>
+ 
+ var firebaseConfig = {
+   apiKey: "AIzaSyCv_U6wM43mCpeizjd9X-ApFzHzp2HqJ84",
+   authDomain: "smartproject-2b2d5.firebaseapp.com",
+   databaseURL: "https://smartproject-2b2d5.firebaseio.com",
+   projectId: "smartproject-2b2d5",
+   storageBucket: "smartproject-2b2d5.appspot.com",
+   messagingSenderId: "1085537988368",
+   appId: "1:1085537988368:web:4925604e33eb45f0f4bf95",
+   measurementId: "G-205JV6TY22"
+   };
+   firebase.initializeApp(firebaseConfig);
+ 
+   </script>
+<script>
+
+  function RegisterUser() {
+   var email=document.getElementById('email').value;
+   var password=document.getElementById('password').value;
+   var age=document.getElementById('age').value;
+   var cnic=document.getElementById('cnic').value;
+   var fname=document.getElementById('fname').value;
+   firebase.auth().createUserWithEmailAndPassword(email,password).then(function(){
+    // alert('User Register successfully');
+    var id=firebase.auth().currentUser.uid;
+    firebase.database().ref('Users/'+id).set({
+     fatherName:fname,
+     UserAge:age,
+     CNIC:cnic,
+    });
+
+    alert("Sucessfully Created!");
+
+
+   }).catch(function(error){
+
+    var errorcode=error.code;
+    var errormsg=error.message;
+
+    window.alert("Error : " + errormsg);
+
+   });
+  }
+
+</script>
+
+</body>
+</html>
