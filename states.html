@@ -1,0 +1,232 @@
+<html>
+  <head>
+    <title>States</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:400,600,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="container">
+    <div id="login_div" class="flex center text-center h-100">
+      <div class="flex-column flex w-400 shadowed-box p-20">
+        <h2 class="mb-5">Smart Poultry System</h2>
+        <input
+          class="form-control mb-3"
+          type="email"
+          placeholder="Email..."
+          id="email_field"
+        />
+        <input
+          class="form-control mb-3"
+          type="password"
+          placeholder="Password..."
+          id="password_field"
+        />
+        <button class="btn btn-primary" onclick="login()">
+          Login to Account
+        </button>
+      </div>
+    </div>
+
+    <div id="user_div" class="flex flex-column">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="states.html"
+                >States <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="history.html">History</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <div class="flex p-10 m-auto">
+              <p id="user_para"></p>
+            </div>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+          </form>
+        </div>
+      </nav>
+
+      <div class="row mt-5 m-1">
+        <div class="col m-2 box">
+          <div class="box p-10 m-3 flex center">
+            <div>
+              <p class="text-center">Temperature</p>
+              <div class="flex round center">
+                <div
+                  id="tempprogress"
+                  class="inline-round flex center text-center"
+                >
+                  <p id="temp" class="text" type="text"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="col m-2 box">
+              <p class="text-center">Maximum Temprature:</p>
+              <div class="flex center">
+                <button
+                  class="btn btn-warning"
+                  id="tmaxsave"
+                  onclick="TmaxDecSave() "
+                >
+                  -
+                </button>
+                <p id="tmax" class="ml-3 mr-3 mb-0 mt-0"></p>
+                <button
+                  class="btn btn-primary"
+                  id="tmaxsave"
+                  onclick="TmaxIncSave() "
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div class="col m-2 box">
+              <p class="text-center">Minimum Temprature:</p>
+              <div class="flex center">
+                <button
+                  id="tminsave"
+                  class="btn btn-warning"
+                  onclick="TminDecSave()"
+                >
+                  -
+                </button>
+                <p id="tmin" class="ml-3 mr-3 mb-0 mt-0"></p>
+                <button
+                  class="btn btn-primary"
+                  id="tminsave"
+                  onclick="TminIncSave()"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col m-2 box">
+          <div class="box p-10 m-3 flex center">
+            <div>
+              <p class="text-center">Humidity</p>
+              <div class="flex round center">
+                <div
+                  id="humprogress"
+                  class="inline-round flex center text-center"
+                >
+                  <p id="hum" class="text" type="text"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="col m-2 box">
+              <p class="text-center">Minimum Humidity:</p>
+              <div class="flex center">
+                <button
+                  id="hminsave"
+                  onclick="HminDecSave()"
+                  class="btn btn-warning"
+                >
+                  -
+                </button>
+                <p id="hmin" class="ml-3 mr-3 mb-0 mt-0"></p>
+                <button
+                  id="hminsave"
+                  class="btn btn-primary"
+                  onclick="HminIncSave()"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div class="col m-2 box">
+              <p class="text-center">Maximum Humidity:</p>
+              <div class="flex center">
+                <button
+                  id="hmaxsave"
+                  onclick="HmaxDecSave()"
+                  class="btn btn-warning"
+                >
+                  -
+                </button>
+                <p id="hmax" class="ml-3 mr-3 mb-0 mt-0"></p>
+                <button
+                  id="hmaxsave"
+                  class="btn btn-primary"
+                  onclick="HmaxIncSave()"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="get" class="btn btn-sm btn-success mt-5" onclick="getData() ">
+        Refresh
+      </button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCv_U6wM43mCpeizjd9X-ApFzHzp2HqJ84",
+        authDomain: "smartproject-2b2d5.firebaseapp.com",
+        databaseURL: "https://smartproject-2b2d5.firebaseio.com",
+        projectId: "smartproject-2b2d5",
+        storageBucket: "smartproject-2b2d5.appspot.com",
+        messagingSenderId: "1085537988368",
+        appId: "1:1085537988368:web:4925604e33eb45f0f4bf95",
+        measurementId: "G-205JV6TY22",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="index.js"></script>
+  </body>
+</html>

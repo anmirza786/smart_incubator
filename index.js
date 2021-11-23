@@ -1,8 +1,9 @@
+var loginuser;
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     // User is signed in.
 
-    document.getElementById("user_div").style.display = "block";
+    document.getElementById("user_div").style.display = "flex";
     document.getElementById("login_div").style.display = "none";
 
     var user = firebase.auth().currentUser;
@@ -11,12 +12,14 @@ firebase.auth().onAuthStateChanged(function (user) {
       var email_id = user.email;
       document.getElementById("user_para").innerHTML =
         "Welcome User : " + email_id;
+      loginuser = "Welcome User : " + email_id;
+      document.getElementById("user_para").style.margin = "0";
     }
   } else {
     // No user is signed in.
 
     document.getElementById("user_div").style.display = "none";
-    document.getElementById("login_div").style.display = "block";
+    document.getElementById("login_div").style.display = "flex";
   }
 });
 let updates;
@@ -36,6 +39,7 @@ function login() {
 
 function logout() {
   firebase.auth().signOut();
+  location.replace = "states.html";
 }
 
 var Temp, Hum;
@@ -44,6 +48,28 @@ var Temp, Hum;
 //   Temp = document.getElementById("temp").value;
 //   Hum = document.getElementById("hum").value;
 // }
+function setprogressbar() {
+  let progresstempdiv = parseInt(maxtemp) - parseInt(mintemp);
+  let progresstemp =
+    (parseInt(temprature) - parseInt(mintemp)) / progresstempdiv;
+  let protemp = progresstemp * 100;
+  let div = protemp + "px";
+  document.getElementById("tempprogress").style.width = div;
+  document.getElementById("tempprogress").style.height = div;
+  let progresshumdiv = parseInt(maxhum) - parseInt(minhum);
+  let progresshum = (parseInt(humidity) - parseInt(minhum)) / progresshumdiv;
+  let prohum = progresshum * 100;
+  let divhum = prohum + "px";
+  document.getElementById("humprogress").style.width = divhum;
+  // console.log(progresshum, progresstemp);
+  document.getElementById("humprogress").style.height = divhum;
+}
+var temprature;
+var humidity;
+var maxtemp;
+var mintemp;
+var maxhum;
+var minhum;
 
 function getData() {
   // ready();
@@ -53,144 +79,188 @@ function getData() {
     .ref("FirebaseIOT")
     .on("value", function (snapshot) {
       document.getElementById("temp").innerHTML = snapshot.val().temperature;
+      temprature = snapshot.val().temperature;
       document.getElementById("hum").innerHTML = snapshot.val().humidity;
+      humidity = snapshot.val().humidity;
       document.getElementById("tmax").innerHTML = snapshot.val().Tmax;
+      maxtemp = snapshot.val().Tmax;
       document.getElementById("tmin").innerHTML = snapshot.val().Tmin;
+      mintemp = snapshot.val().Tmin;
       document.getElementById("hmin").innerHTML = snapshot.val().Hmin;
+      minhum = snapshot.val().Hmin;
       document.getElementById("hmax").innerHTML = snapshot.val().Hmax;
+      maxhum = snapshot.val().Hmax;
+      document.getElementById("temp").style.marginBottom = "0";
+      document.getElementById("hum").style.marginBottom = "0";
+      document.getElementById("tmax").style.marginBottom = "0";
+      document.getElementById("tmin").style.marginBottom = "0";
+      document.getElementById("hmin").style.marginBottom = "0";
+      document.getElementById("hmax").style.marginBottom = "0";
+      setprogressbar();
     });
 }
+
+var tempmin;
 function getTmin() {
-  document.getElementById("tmin").style.display = "none";
-  document.getElementById("btntmin").style.display = "none";
-  document.getElementById("settmin").style.display = "block";
+  document.getElementById("tmin").style.display = "block";
   document.getElementById("tminsave").style.display = "block";
   firebase
     .database()
     .ref("FirebaseIOT")
     .on("value", function (snapshot) {
-      document.getElementById("settmin").value = snapshot.val().Tmin;
+      tempmin = snapshot.val().Tmin;
     });
 }
-function TminSave() {
-  document.getElementById("tmin").style.display = "block";
-  document.getElementById("btntmin").style.display = "block";
-  document.getElementById("settmin").style.display = "none";
-  document.getElementById("tminsave").style.display = "none";
-  let tmin = document.getElementById("settmin").value;
+function TminIncSave() {
+  getTmin();
+  tempmin = parseInt(tempmin);
+  let tmin = tempmin + 1;
   let Tmin;
   updates = {
     Tmin: tmin,
   };
   firebase.database().ref("FirebaseIOT").update(updates);
-  alert("TMin Updated");
+
+  getTmin();
 }
+function TminDecSave() {
+  getTmin();
+  tempmin = parseInt(tempmin);
+  let tmin = tempmin - 1;
+  let Tmin;
+  updates = {
+    Tmin: tmin,
+  };
+  firebase.database().ref("FirebaseIOT").update(updates);
+
+  getTmin();
+}
+var tempmax;
 function getTmax() {
-  document.getElementById("tmax").style.display = "none";
-  document.getElementById("btntmax").style.display = "none";
-  document.getElementById("settmax").style.display = "block";
+  document.getElementById("tmax").style.display = "block";
   document.getElementById("tmaxsave").style.display = "block";
   firebase
     .database()
     .ref("FirebaseIOT")
     .on("value", function (snapshot) {
-      document.getElementById("settmax").value = snapshot.val().Tmax;
+      tempmax = snapshot.val().Tmax;
     });
 }
-function TmaxSave() {
-  document.getElementById("tmax").style.display = "block";
-  document.getElementById("btntmax").style.display = "block";
-  document.getElementById("settmax").style.display = "none";
-  document.getElementById("tmaxsave").style.display = "none";
-  let settmax = document.getElementById("settmax").value;
+function TmaxIncSave() {
+  getTmax();
+  tempmax = parseInt(tempmax);
+  let settmax = tempmax + 1;
   let Tmax;
   updates = {
     Tmax: settmax,
   };
   firebase.database().ref("FirebaseIOT").update(updates);
-  console.log(document.getElementById("settmax").value);
-  alert("TMax Updated");
 }
+function TmaxDecSave() {
+  getTmax();
+  tempmax = parseInt(tempmax);
+  let settmax = tempmax - 1;
+  let Tmax;
+  updates = {
+    Tmax: settmax,
+  };
+  firebase.database().ref("FirebaseIOT").update(updates);
+}
+var hummax;
 function getHmax() {
-  document.getElementById("hmax").style.display = "none";
-  document.getElementById("btnhmax").style.display = "none";
-  document.getElementById("sethmax").style.display = "block";
-  document.getElementById("hmaxsave").style.display = "block";
   firebase
     .database()
     .ref("FirebaseIOT")
     .on("value", function (snapshot) {
-      document.getElementById("sethmax").value = snapshot.val().Hmax;
+      hummax = snapshot.val().Hmax;
     });
 }
-function HmaxSave() {
-  document.getElementById("hmax").style.display = "block";
-  document.getElementById("btnhmax").style.display = "block";
-  document.getElementById("sethmax").style.display = "none";
-  document.getElementById("hmaxsave").style.display = "none";
-  let hmax = document.getElementById("sethmax").value;
+function HmaxIncSave() {
+  getHmax();
+  let hmax = parseInt(hummax) + 1;
   let Hmax;
   updates = {
     Hmax: hmax,
   };
   firebase.database().ref("FirebaseIOT").update(updates);
-  alert("HMax Updated");
 }
+function HmaxDecSave() {
+  getHmax();
+  let hmax = parseInt(hummax) - 1;
+  let Hmax;
+  updates = {
+    Hmax: hmax,
+  };
+  firebase.database().ref("FirebaseIOT").update(updates);
+}
+var hummin;
 function getHmin() {
-  document.getElementById("hmin").style.display = "none";
-  document.getElementById("btnhmin").style.display = "none";
-  document.getElementById("sethmin").style.display = "block";
-  document.getElementById("hminsave").style.display = "block";
   firebase
     .database()
     .ref("FirebaseIOT")
     .on("value", function (snapshot) {
-      document.getElementById("sethmin").value = snapshot.val().Hmin;
+      hummin = snapshot.val().Hmin;
     });
 }
-function HminSave() {
-  document.getElementById("hmin").style.display = "block";
-  document.getElementById("btnhmin").style.display = "block";
-  document.getElementById("sethmin").style.display = "none";
-  document.getElementById("hminsave").style.display = "none";
-  let hmin = document.getElementById("sethmin").value;
+function HminIncSave() {
+  getHmin();
+  let hmin = parseInt(hummin) + 1;
   let Hmin;
   updates = {
     Hmin: hmin,
   };
   firebase.database().ref("FirebaseIOT").update(updates);
-  alert("HMin Updated");
 }
+function HminDecSave() {
+  getHmin();
+  let hmin = parseInt(hummin) - 1;
+  let Hmin;
+  updates = {
+    Hmin: hmin,
+  };
+  firebase.database().ref("FirebaseIOT").update(updates);
+}
+var tbody = document.getElementById("data");
 function toTable(temp, hum, date, time) {
-  let ul = document.getElementById("data");
-  let _temp = document.createElement("li");
-  let _hum = document.createElement("li");
-  let _date = document.createElement("li");
-  let _time = document.createElement("li");
-  _temp.innerHTML = "Temprature: " + temp;
-  _hum.innerHTML = "Humidity: " + hum;
-  _date.innerHTML = "Date: " + date;
-  _time.innerHTML = "Time: " + time;
-  ul.appendChild(_temp);
-  ul.appendChild(_hum);
-  ul.appendChild(_date);
-  ul.appendChild(_time);
+  let tr = document.createElement("tr");
+  let _temp = document.createElement("td");
+  let _hum = document.createElement("td");
+  let _date = document.createElement("td");
+  let _time = document.createElement("td");
+  _temp.innerHTML = temp;
+  _hum.innerHTML = hum;
+  _date.innerHTML = date;
+  _time.innerHTML = time;
+  tbody.appendChild(tr);
+  tr.appendChild(_temp);
+  tr.appendChild(_hum);
+  tr.appendChild(_date);
+  tr.appendChild(_time);
 }
-
+function toHistoryArray(History) {
+  tbody.innerHTML = "";
+  History.forEach((element) => {
+    toTable(element.Temperature, element.Humidity, element.Date, element.Time);
+  });
+}
+function toDataTable() {
+  let table = new DataTable("#history_data", {
+    dom: "Bfrtip",
+    buttons: ["copy", "csv", "excel"],
+  });
+}
 function getHistory() {
+  var history = [];
   console.log(1);
   firebase
     .database()
     .ref("History")
-    .once("value", function (snapshot) {
+    .on("value", function (snapshot) {
       snapshot.forEach(function (ChildSnapshot) {
-        let temp = ChildSnapshot.val().Temperature;
-        let hum = ChildSnapshot.val().Humidity;
-        let time = ChildSnapshot.val().Time;
-        let date = ChildSnapshot.val().Date;
-
-        toTable(temp, hum, date, time);
+        history.push(ChildSnapshot.val());
       });
+      toHistoryArray(history);
+      toDataTable();
     });
 }
 function timedRefresh(time) {
