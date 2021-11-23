@@ -21,6 +21,22 @@
   border-radius: 50%;
   box-shadow: 0 0 20px tomato;
 }
+footer {
+  border-top: 1px solid lightgray;
+}
+img {
+  width: 100%;
+}
+.section1 img {
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.section2 img {
+  clip-path: polygon(0 0, 80% 0, 100% 100%, 0% 100%);
+}
+.footer-copyright {
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
 .flex {
   display: flex;
 }
